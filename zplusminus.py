@@ -67,6 +67,71 @@ def interpretCode():
 				values[commands[i]] = (values[commands[i]] * values[commands[i + 2]])
 
 
+		if commands[i] == "FOR":
+			iterations = int(commands[i + 1])
+
+			for j in range(0, iterations):
+
+				if not(commands[i + 2] in values) and commands[i - 2] =="FOR" or not commands[i + 2] in values && commands[i - 6] == "FOR":
+
+						if commands[i + 1] == "=":
+							values[commands[i]] = int(commands[i + 2])
+
+						if commands[i + 1] == "+=":
+							values[commands[i]] = int(values[commands[i]]) + int(commands[i + 2]);
+				
+						if commands[i + 1] == "-=":
+							values[commands[i]] = int(values[commands[i]]) - int(commands[i + 2]);
+
+						if commands[i + 1] == "*=":
+							values[commands[i]] = int(values[commands[i]]) * int(commands[i + 2]);
+
+				#// /////////////////Assign from a variable//////////
+
+				if commands[i + 2] in values && commands[i - 2] == "FOR" or commands[i + 2] in values && commands[i - 6] == "FOR":
+
+					if (commands.get(i + 1).equals("=")) {
+							values.put(commands.get(i),
+									values.get(commands.get(i + 2)));
+						}
+
+					if (commands.get(i + 1).equals("+=")) {
+							values.put(
+									commands.get(i),
+									values.get(commands.get(i))
+											+ values.get(commands.get(i + 2)));
+						}
+
+					if (commands.get(i + 1).equals("-=")) {
+							values.put(
+									commands.get(i),
+									values.get(commands.get(i))
+											- values.get(commands.get(i + 2)));
+						}
+
+					if (commands.get(i + 1).equals("*=")) {
+							values.put(
+									commands.get(i),
+									values.get(commands.get(i))
+											* values.get(commands.get(i + 2)));
+						}
+					}
+
+					if (!commands.get(i).equals("ENDFOR")) {
+						j--;
+					}
+
+					if (commands.get(i).equals("ENDFOR")) {
+						i = i - 9;
+					}
+
+					i++;
+
+#############
+
+
+
+
 
 
 	print(values)
