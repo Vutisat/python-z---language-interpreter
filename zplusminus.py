@@ -1,7 +1,12 @@
 '''
  @author Pob Vutisalchavakul 2/5/2015
- 
+ This is my first actual program written in Python.
+ It interprets the language z+- given a file input.
+ The coding can definitely be reduce but the logic currently work, will polish if I have time.
+
+ Please change the file input in line 32 of the program.
 ''' 
+#Declaring Global Variables
 commands = list()
 values = {}
 
@@ -11,11 +16,20 @@ def zPlusMinus():
 	printValues()
 	return
 
+#This method sorts the variables alphabetically then print out their values at the end.
 def printValues():
+
+	from collections import Counter
+	c = Counter(values)
+	
+	for k,v in sorted(c.items()):
+		print('{}: {}'.format(k,v))
+	
 	return
 
+#This method reads from a file and split each meaningful part into an array
 def readFile():
-	with open("prog6.zpm") as f:
+	with open("prog4.zpm") as f:
 		content = f.readlines()
 
 	for i in content:
@@ -24,12 +38,9 @@ def readFile():
 	commands.extend("AlmostEnd")
 	commands.extend("Ending")
 	
-#	This will print out all the commands
-#	for i in commands:
-#		print(i)
 	return
 
-
+#This part interpret and do the work of the code. A dictionary "values" is used to store all variables
 def interpretCode():
 	i = 0
 	while i < len(commands):
@@ -37,7 +48,7 @@ def interpretCode():
 		if commands[i] == "DEF":
 			values[commands[i+1]] = 0
 
-		#////////////////////Assign from a number//////////////
+		#Assigning from number and arithmetric
 		if ((commands[i] in values and commands[i - 1] == ";" and not commands[i + 2] in values	and not commands[i + 4] == "ENDFOR") or (commands[i] in values and not commands[i + 2] in values and not commands[i + 4]  == "ENDFOR" and commands[i - 1] == "ENDFOR")):
 			
 			if commands[i + 1] == "=":
@@ -52,7 +63,7 @@ def interpretCode():
 			if commands[i + 1] == "*=":
 					values[commands[i]] = int(values[commands[i]]) * int(commands[i + 2]);
 
-		#////////////////////Assign from a variable//////////
+		#Assigning from variable
 		if ((commands[i] in values and commands[i-1] == ";" and commands[i+2] in values and not(commands[i+4] == "ENDFOR"))	or (commands[i] in values and commands[i+2] in values and not(commands[i+4] == "ENDFOR" and commands[i - 1] == "ENDFOR"))):
 
 			if commands[i + 1] == "=":
@@ -74,6 +85,7 @@ def interpretCode():
 
 			while j < iterations:
 				
+				#For loop with arithmetric
 				if (not(commands[i + 2] in values) and commands[i - 2] =="FOR") or (not (commands[i + 2] in values) and commands[i - 6] == "FOR"):
 					
 					if commands[i + 1] == "=":
@@ -87,10 +99,8 @@ def interpretCode():
 
 					if commands[i + 1] == "*=":
 						values[commands[i]] = int(values[commands[i]]) * int(commands[i + 2])
-						
 
-				#// /////////////////Assign from a variable//////////
-
+				#For loop with assignment
 				if (commands[i + 2] in values and commands[i - 2] == "FOR") or (commands[i + 2] in values and commands[i - 6] == "FOR"):
 
 					if commands[i + 1] == "=":
@@ -114,11 +124,6 @@ def interpretCode():
 				j += 1
 				i += 1
 		i += 1
-
-
-
-
-	print(values)
 	return
 
 zPlusMinus();
